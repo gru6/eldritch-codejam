@@ -1,7 +1,7 @@
-import { cardsData as GreenCardsDate } from './data/mythicCards/green/index.js'
-import { cardsData as BrownCardsDate } from './data/mythicCards/brown/index.js'
-import { cardsData as BlueCardsDate } from './data/mythicCards/blue/index.js'
-
+import { cardsData as GreenCardsDate } from './data/mythicCards/green/index'
+import { cardsData as BrownCardsDate } from './data/mythicCards/brown/index'
+import { cardsData as BlueCardsDate } from './data/mythicCards/blue/index'
+import '../src/style.css'
 const body = document.querySelector('body');
 const AllAncientCard = document.querySelectorAll('.ancient-card')
 const AncientCard = document.querySelector('.ancient-card')
@@ -13,10 +13,6 @@ const currentState = document.querySelector('.current-state')
 const deck = document.querySelector('.deck')
 const lastCard = document.querySelector('.last-card')
 const shaffle = document.querySelector('.shaffle')
-
-
-
-
 
 
 //chose Anciend card
@@ -166,4 +162,9 @@ function (name, ) {
       }
     }
   }
+} */
+
+
+/* function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
 } */

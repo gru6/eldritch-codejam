@@ -3,7 +3,7 @@ body {
 }
 
 .app {
-  background-image: url(./assets/home.png);
+  background-image: url('./assets/home.png');
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -31,6 +31,22 @@ body {
   cursor: pointer;
   height: 260px;
   width: 200px;
+}
+
+.Azathoth {
+  background-image: url('./assets/Ancients/Azathoth.png')
+}
+
+.Cthulthu {
+  background-image: url('./assets/Ancients/Cthulthu.png')
+}
+
+.IogSothoth {
+  background-image: url('./assets/Ancients/IogSothoth.png')
+}
+
+.ShubNiggurath {
+  background-image: url('./assets/Ancients/ShubNiggurath.png')
 }
 
 .active {
@@ -83,6 +99,7 @@ body {
 }
 
 .deck {
+  background-image: url('./assets/mythicCardBackground.png');
   background-size: cover;
   height: 190px;
   width: 130px;
