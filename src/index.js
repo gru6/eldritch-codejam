@@ -1,7 +1,9 @@
-import { cardsData as GreenCardsDate } from './data/mythicCards/green/index'
-import { cardsData as BrownCardsDate } from './data/mythicCards/brown/index'
-import { cardsData as BlueCardsDate } from './data/mythicCards/blue/index'
-import '../src/style.css'
+import './style.css';
+import BrownCardsData from './data/mythicCards/brown/index.js';
+import GreenCardsData from './data/mythicCards/green/index.js';
+import BlueCardsData from './data/mythicCards/blue/index.js';
+
+
 const body = document.querySelector('body');
 const AllAncientCard = document.querySelectorAll('.ancient-card')
 const AncientCard = document.querySelector('.ancient-card')
@@ -52,7 +54,7 @@ shaffle.addEventListener('click', (e) => {
 //выбрать карты для каждого этапа и смешать их(получится 3 колоды разных цветов и сложности)
 //положить 1 колоду сверху под нее 2 этап и под них 3 этап
 
-let allCardsData = [...GreenCardsDate, ...BrownCardsDate, ...BlueCardsDate]; //all green cards как получить?
+let allCardsData = [...GreenCardsData, ...BrownCardsData, ...BlueCardsData]; //all green cards как получить?
 let SubDeck1 = [];
 let SubDeck2 = [];
 let SubDeck3 = [];

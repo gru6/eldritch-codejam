@@ -16,11 +16,11 @@ body {
 
 .ancients-container {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
   gap: 20px;
   min-width: 40%;
   padding: 20px;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
 }
 
 .ancient-card {

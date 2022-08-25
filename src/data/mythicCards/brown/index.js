@@ -1,6 +1,6 @@
 import brownCardsAssets from '../../../assets/MythicCards/brown';
 
-export const cardsData = [
+export const BrownCardsData = [
   {
     id: 'brown1',
     cardFace: brownCardsAssets.brown1,
