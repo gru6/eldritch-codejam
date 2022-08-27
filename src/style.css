@@ -21,6 +21,7 @@ body {
   padding: 20px;
   flex-direction: column-reverse;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .ancient-card {
@@ -31,6 +32,22 @@ body {
   cursor: pointer;
   height: 260px;
   width: 200px;
+}
+
+@media (max-width: 900px) {
+  .ancient-card {
+    height: 240px;
+    width: 150px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .ancient-card {
+    height: 180px;
+    width: 150px;
+  }
+
 }
 
 .Azathoth {

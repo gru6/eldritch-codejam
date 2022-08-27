@@ -13,8 +13,8 @@ const currentState = document.querySelector('.current-state')
 const deck = document.querySelector('.deck')
 const lastCard = document.querySelector('.last-card')
 const shuffle = document.querySelector('.shuffle')
-let heroChecked;
-let difficultChecked;
+let heroChecked = '';
+let difficultChecked = '';
 
 //chose Anciend card
 body.addEventListener('click', (e) => {
@@ -52,16 +52,35 @@ body.addEventListener('click', (e) => {
     if (event.classList.contains('veryEasy')) {
       difficultChecked = 'veryEasy';
     }
+    if (event.classList.contains('easy')) {
+      difficultChecked = 'easy';
+    }
+    if (event.classList.contains('normal')) {
+      difficultChecked = 'normal';
+    }
+    if (event.classList.contains('hard')) {
+      difficultChecked = 'hard';
+    }
+    if (event.classList.contains('veryHard')) {
+      difficultChecked = 'veryHard';
+    }
   }
 })
 
+
+
+
 //click shuffle deck
 shuffle.addEventListener('click', (e) => {
-  shuffle.classList.add('hidden')
-  currentState.classList.remove('hidden')
-  deck.classList.remove('hidden')
-  lastCard.classList.remove('hidden')
-  shuffleDeck(heroChecked, difficultChecked);
+  if (heroChecked === '' && difficultChecked === '') {
+    alert('Выбери демона и сложность игры')
+  } else {
+    shuffle.classList.add('hidden')
+    currentState.classList.remove('hidden')
+    deck.classList.remove('hidden')
+    lastCard.classList.remove('hidden')
+    shuffleDeck(heroChecked, difficultChecked);
+  }
 })
 
 function reset() {
@@ -150,7 +169,103 @@ function shuffleDeck(heroChecked, difficultChecked) {
     makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
   }
 
+  if (difficultChecked === 'easy') {
+    GreenDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' || card.difficulty === 'normal' && card.color === 'green');
+    });
+
+    BrownDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' || card.difficulty === 'normal' && card.color === 'brown');
+    });
+
+    BlueDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' || card.difficulty === 'normal' && card.color === 'blue');
+    });
+
+    GreenDeck = shuff(GreenDeck);     //ПЕРЕМЕШИВАНИЕ
+    BrownDeck = shuff(BrownDeck);
+    BlueDeck = shuff(BlueDeck);
+    makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
+  }
+
+  if (difficultChecked === 'normal') {
+    GreenDeck = allCardsData.filter(function (card) {
+      return (card.color === 'green');
+    });
+
+    BrownDeck = allCardsData.filter(function (card) {
+      return (card.color === 'brown');
+    });
+
+    BlueDeck = allCardsData.filter(function (card) {
+      return (card.color === 'blue');
+    });
+
+    GreenDeck = shuff(GreenDeck);     //ПЕРЕМЕШИВАНИЕ
+    BrownDeck = shuff(BrownDeck);
+    BlueDeck = shuff(BlueDeck);
+    makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
+  }
+
+  if (difficultChecked === 'hard') {
+    GreenDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'normal' || card.difficulty === 'hard' && card.color === 'green');
+    });
+
+    BrownDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'normal' || card.difficulty === 'hard' && card.color === 'brown');
+    });
+
+    BlueDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'normal' || card.difficulty === 'hard' && card.color === 'blue');
+    });
+
+    GreenDeck = shuff(GreenDeck);     //ПЕРЕМЕШИВАНИЕ
+    BrownDeck = shuff(BrownDeck);
+    BlueDeck = shuff(BlueDeck);
+    makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
+  }
+
+  if (difficultChecked === 'veryHard') {
+    GreenDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'hard' && card.color === 'green');
+    });
+    GreenDeck = GreenDeck.slice(0, totalGreen);
+    if (GreenDeck.length <= greenHard.length) {
+      for (let j = 0; GreenDeck.length < totalGreen; j++) {
+        GreenDeck.push(greenNormal[j])
+      }
+    }
+    BrownDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'hard' && card.color === 'brown');
+    });
+    BrownDeck = BrownDeck.slice(0, totalBrown);
+    if (BrownDeck.length <= brownHard.length) {
+      for (let j = 0; BrownDeck.length < totalBrown; j++) {
+        BrownDeck.push(brownNormal[j])
+      }
+    }
+    BlueDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'hard' && card.color === 'blue');
+    });
+    BlueDeck = BlueDeck.slice(0, totalBlue);
+    if (BlueDeck.length <= blueHard.length) {
+      for (let j = 0; BlueDeck.length < totalBlue; j++) {
+        BlueDeck.push(blueNormal[j])
+      }
+    }
+
+    GreenDeck = shuff(GreenDeck);     //ПЕРЕМЕШИВАНИЕ
+    BrownDeck = shuff(BrownDeck);
+    BlueDeck = shuff(BlueDeck);
+    makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
+  }
+
 }
+
+
+
+
 
 //собрать 3 стейджа 
 function makeStageDeck(green, brown, blue) {
