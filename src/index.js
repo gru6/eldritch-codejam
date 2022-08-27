@@ -28,6 +28,15 @@ body.addEventListener('click', (e) => {
     if (event.classList.contains('Azathoth')) {
       heroChecked = 'Azathoth';
     }
+    if (event.classList.contains('Cthulhu')) {
+      heroChecked = 'Cthulhu';
+    }
+    if (event.classList.contains('IogSothoth')) {
+      heroChecked = 'IogSothoth';
+    }
+    if (event.classList.contains('ShubNiggurath')) {
+      heroChecked = 'ShubNiggurath';
+    }
   }
 })
 
@@ -61,7 +70,6 @@ function reset() {
   deck.classList.add('hidden')
   deck.classList.remove('unvisible')
   lastCard.classList.add('hidden')
-  AzathothAllCards = [];
   lastCard.style.backgroundImage = 'none';
   giveCardNumber = 0;
 
@@ -73,89 +81,110 @@ function reset() {
 //положить 1 колоду сверху под нее 2 этап и под них 3 этап
 
 let allCardsData = [...GreenCardsData, ...BrownCardsData, ...BlueCardsData];
+allCardsData = shuff(allCardsData);
 let SubDeck1 = [];
 let SubDeck2 = [];
 let SubDeck3 = [];
-let AzathothAllCards = []; //собераем колоду для Азатота
-let AzathothGreen = []; //5
-let AzathothBrown = []; //9
-let AzathothBlue = []; //2
+let DeckForGame = []; //собераем колоду для раздачи
 
 function shuffleDeck(heroChecked, difficultChecked) {
-  AzathothAllCards = [];
+  let totalGreen;
+  let totalBrown;
+  let totalBlue;
+  let GreenDeck = [];
+  let BrownDeck = [];
+  let BlueDeck = [];
+
   if (heroChecked === 'Azathoth') {
-
-    if (difficultChecked === 'veryEasy') {
-      AzathothGreen = allCardsData.filter(function (card) {
-        return (card.difficulty === 'easy' && card.color === 'green');
-      });
-      AzathothGreen = AzathothGreen.slice(0, 5);
-      if (AzathothGreen.length <= greenEasy.length) {
-        for (let j = 0; AzathothGreen.length < 5; j++) {
-          AzathothGreen.push(greenNormal[j])
-        }
-      }
-      AzathothBrown = allCardsData.filter(function (card) {
-        return (card.difficulty === 'easy' && card.color === 'brown');
-      });
-      AzathothBrown = AzathothBrown.slice(0, 9);
-      if (AzathothBrown.length <= brownEasy.length) {
-        for (let j = 0; AzathothBrown.length < 9; j++) {
-          AzathothBrown.push(brownNormal[j])
-        }
-      }
-      AzathothBlue = allCardsData.filter(function (card) {
-        return (card.difficulty === 'easy' && card.color === 'blue');
-      });
-      AzathothBlue = AzathothBlue.slice(0, 2);
-      if (AzathothBlue.length <= blueEasy.length) {
-        for (let j = 0; AzathothBlue.length < 2; j++) {
-          AzathothBlue.push(blueNormal[j])
-        }
-      }
-      makeStageDeck(AzathothGreen, AzathothBrown, AzathothBlue);
-
-    }
-
-
-
-
-
-
-
-
+    totalGreen = 5;
+    totalBrown = 9;
+    totalBlue = 2;
   }
+  if (heroChecked === 'Cthulhu') {
+    totalGreen = 4;
+    totalBrown = 9;
+    totalBlue = 2;
+  }
+  if (heroChecked === 'IogSothoth') {
+    totalGreen = 5;
+    totalBrown = 9;
+    totalBlue = 2;
+  }
+  if (heroChecked === 'ShubNiggurath') {
+    totalGreen = 6;
+    totalBrown = 8;
+    totalBlue = 2;
+  }
+
+  if (difficultChecked === 'veryEasy') {
+    GreenDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' && card.color === 'green');
+    });
+    GreenDeck = GreenDeck.slice(0, totalGreen);
+    if (GreenDeck.length <= greenEasy.length) {
+      for (let j = 0; GreenDeck.length < totalGreen; j++) {
+        GreenDeck.push(greenNormal[j])
+      }
+    }
+    BrownDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' && card.color === 'brown');
+    });
+    BrownDeck = BrownDeck.slice(0, totalBrown);
+    if (BrownDeck.length <= brownEasy.length) {
+      for (let j = 0; BrownDeck.length < totalBrown; j++) {
+        BrownDeck.push(brownNormal[j])
+      }
+    }
+    BlueDeck = allCardsData.filter(function (card) {
+      return (card.difficulty === 'easy' && card.color === 'blue');
+    });
+    BlueDeck = BlueDeck.slice(0, totalBlue);
+    if (BlueDeck.length <= blueEasy.length) {
+      for (let j = 0; BlueDeck.length < totalBlue; j++) {
+        BlueDeck.push(blueNormal[j])
+      }
+    }
+    GreenDeck = shuff(GreenDeck);     //ПЕРЕМЕШИВАНИЕ
+    BrownDeck = shuff(BrownDeck);
+    BlueDeck = shuff(BlueDeck);
+    makeStageDeck(GreenDeck, BrownDeck, BlueDeck);
+  }
+
 }
 
 //собрать 3 стейджа 
 function makeStageDeck(green, brown, blue) {
+  let heroNum;
   if (heroChecked === 'Azathoth') {
-
-    SubDeck1.push(green.splice(-ancientsData[0].firstStage.greenCards));
-    SubDeck2.push(green.splice(-ancientsData[0].secondStage.greenCards));
-    SubDeck3.push(green.splice(-ancientsData[0].thirdStage.greenCards));
-
-    SubDeck1.push(brown.splice(-ancientsData[0].firstStage.brownCards));
-    SubDeck2.push(brown.splice(-ancientsData[0].secondStage.brownCards));
-    SubDeck3.push(brown.splice(-ancientsData[0].thirdStage.brownCards));
-
-    SubDeck1.push(blue.splice(-ancientsData[0].firstStage.blueCards));
-    SubDeck2.push(blue.splice(-ancientsData[0].secondStage.blueCards));
-    SubDeck3.push(blue.splice(-ancientsData[0].thirdStage.blueCards));
-
+    heroNum = 0;
   }
-  // TODO SubDeck1 SubDeck2 SubDeck3 перемешать надо
-  /*   SubDeck3 = SubDeck3.map(function (deck) {
-      deck.sort(() => Math.random() - 0.5);
-    })
-    console.log(SubDeck3); */
+  if (heroChecked === 'Cthulhu') {
+    heroNum = 1;
+  }
+  if (heroChecked === 'IogSothoth') {
+    heroNum = 2;
+  }
+  if (heroChecked === 'ShubNiggurath') {
+    heroNum = 3;
+  }
 
-  AzathothAllCards = [...SubDeck1, ...SubDeck2, ...SubDeck3].flat(2);
+  SubDeck1.push(green.splice(0, ancientsData[heroNum].firstStage.greenCards));
+  SubDeck2.push(green.splice(0, ancientsData[heroNum].secondStage.greenCards));
+  SubDeck3.push(green.splice(0, ancientsData[heroNum].thirdStage.greenCards));
+
+  SubDeck1.push(brown.splice(0, ancientsData[heroNum].firstStage.brownCards));
+  SubDeck2.push(brown.splice(0, ancientsData[heroNum].secondStage.brownCards));
+  SubDeck3.push(brown.splice(0, ancientsData[heroNum].thirdStage.brownCards));
+
+  SubDeck1.push(blue.splice(0, ancientsData[heroNum].firstStage.blueCards));
+  SubDeck2.push(blue.splice(0, ancientsData[heroNum].secondStage.blueCards));
+  SubDeck3.push(blue.splice(0, ancientsData[heroNum].thirdStage.blueCards));
+
+  DeckForGame = [...SubDeck1, ...SubDeck2, ...SubDeck3].flat(2);
   SubDeck1 = [];
   SubDeck2 = [];
   SubDeck3 = [];
-  console.log(AzathothAllCards)
-
+  console.log('Калода на раздачу', DeckForGame)
 }
 
 
@@ -163,10 +192,10 @@ function makeStageDeck(green, brown, blue) {
 deck.addEventListener('click', giveCard)
 let giveCardNumber = 0;
 function giveCard() {
-  lastCard.style.backgroundImage = `url(${AzathothAllCards[giveCardNumber].cardFace})`;
-  console.log(`Последняя карта:${AzathothAllCards[giveCardNumber].id} ${AzathothAllCards[giveCardNumber].difficulty}`);
+  lastCard.style.backgroundImage = `url(${DeckForGame[giveCardNumber].cardFace})`;
+  console.log(`Последняя карта:${DeckForGame[giveCardNumber].id} ${DeckForGame[giveCardNumber].difficulty}`);
   giveCardNumber += 1;
-  if (giveCardNumber === AzathothAllCards.length) {
+  if (giveCardNumber === DeckForGame.length) {
     deck.classList.add('unvisible');
   }
 }
@@ -178,7 +207,6 @@ var greenEasy = allCardsData.filter(function (card) {
   return (card.difficulty === 'easy' && card.color === 'green');
 });
 shuff(greenEasy);
-
 var brownEasy = allCardsData.filter(function (card) {
   return (card.difficulty === 'easy' && card.color === 'brown');
 });
@@ -213,6 +241,10 @@ var blueHard = allCardsData.filter(function (card) {
 shuff(blueHard);
 
 
-function shuff(deck) {
-  deck.sort(() => Math.random() - 0.5);
+function shuff(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
