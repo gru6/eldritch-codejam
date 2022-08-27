@@ -2,7 +2,7 @@ import './style.css';
 import BrownCardsData from './data/mythicCards/brown/index.js';
 import GreenCardsData from './data/mythicCards/green/index.js';
 import BlueCardsData from './data/mythicCards/blue/index.js';
-
+import ancientsData from './data/ancients.js';
 
 const body = document.querySelector('body');
 const AllAncientCard = document.querySelectorAll('.ancient-card')
@@ -12,10 +12,9 @@ const difficultyCard = document.querySelector('.difficulty')
 const currentState = document.querySelector('.current-state')
 const deck = document.querySelector('.deck')
 const lastCard = document.querySelector('.last-card')
-const shaffle = document.querySelector('.shaffle')
+const shuffle = document.querySelector('.shuffle')
 let heroChecked;
 let difficultChecked;
-
 
 //chose Anciend card
 body.addEventListener('click', (e) => {
@@ -25,6 +24,7 @@ body.addEventListener('click', (e) => {
       AllAncientCard[i].classList.remove('active')
     }
     event.classList.add('active')
+    reset();
     if (event.classList.contains('Azathoth')) {
       heroChecked = 'Azathoth';
     }
@@ -39,20 +39,33 @@ body.addEventListener('click', (e) => {
       AllDifficulty[i].classList.remove('active-btn')
     }
     event.classList.add('active-btn')
+    reset();
     if (event.classList.contains('veryEasy')) {
       difficultChecked = 'veryEasy';
     }
   }
 })
-//click shaffle
-shaffle.addEventListener('click', (e) => {
-  shaffle.classList.add('hidden')
+
+//click shuffle deck
+shuffle.addEventListener('click', (e) => {
+  shuffle.classList.add('hidden')
   currentState.classList.remove('hidden')
   deck.classList.remove('hidden')
   lastCard.classList.remove('hidden')
-  shaffleDeck(heroChecked, difficultChecked);
+  shuffleDeck(heroChecked, difficultChecked);
 })
 
+function reset() {
+  shuffle.classList.remove('hidden')
+  currentState.classList.add('hidden')
+  deck.classList.add('hidden')
+  deck.classList.remove('unvisible')
+  lastCard.classList.add('hidden')
+  AzathothAllCards = [];
+  lastCard.style.backgroundImage = 'none';
+  giveCardNumber = 0;
+
+}
 
 
 //берем все green(brown, blue)  и выбираем из них 5(9, 2) easy if easy закончились то normal
@@ -68,8 +81,8 @@ let AzathothGreen = []; //5
 let AzathothBrown = []; //9
 let AzathothBlue = []; //2
 
-function shaffleDeck(heroChecked, difficultChecked) {
-
+function shuffleDeck(heroChecked, difficultChecked) {
+  AzathothAllCards = [];
   if (heroChecked === 'Azathoth') {
 
     if (difficultChecked === 'veryEasy') {
@@ -101,28 +114,62 @@ function shaffleDeck(heroChecked, difficultChecked) {
         }
       }
       makeStageDeck(AzathothGreen, AzathothBrown, AzathothBlue);
+
     }
 
 
 
-    console.log(AzathothAllCards);
+
+
+
+
+
   }
 }
 
 //собрать 3 стейджа 
-/* function makeStageDeck(green, brown, blue) {
-  for (let i = 0; green.length > 0 && brown.length > 0 && blue.length > 0; i++) {
-    SubDeck1 = green.slice(1);
+function makeStageDeck(green, brown, blue) {
+  if (heroChecked === 'Azathoth') {
+
+    SubDeck1.push(green.splice(-ancientsData[0].firstStage.greenCards));
+    SubDeck2.push(green.splice(-ancientsData[0].secondStage.greenCards));
+    SubDeck3.push(green.splice(-ancientsData[0].thirdStage.greenCards));
+
+    SubDeck1.push(brown.splice(-ancientsData[0].firstStage.brownCards));
+    SubDeck2.push(brown.splice(-ancientsData[0].secondStage.brownCards));
+    SubDeck3.push(brown.splice(-ancientsData[0].thirdStage.brownCards));
+
+    SubDeck1.push(blue.splice(-ancientsData[0].firstStage.blueCards));
+    SubDeck2.push(blue.splice(-ancientsData[0].secondStage.blueCards));
+    SubDeck3.push(blue.splice(-ancientsData[0].thirdStage.blueCards));
+
   }
-  if   
-  
-  SubDeck1 = green.pop() + blue.pop() + brown.pop() + brown.pop();
-  SubDeck2 = ....
-  SubDeck3
-  ancientsData[0].firstStage[greenCards] // обращение к greenCards: 1,
+  // TODO SubDeck1 SubDeck2 SubDeck3 перемешать надо
+  /*   SubDeck3 = SubDeck3.map(function (deck) {
+      deck.sort(() => Math.random() - 0.5);
+    })
+    console.log(SubDeck3); */
 
-} */
+  AzathothAllCards = [...SubDeck1, ...SubDeck2, ...SubDeck3].flat(2);
+  SubDeck1 = [];
+  SubDeck2 = [];
+  SubDeck3 = [];
+  console.log(AzathothAllCards)
 
+}
+
+
+// выдача карт 
+deck.addEventListener('click', giveCard)
+let giveCardNumber = 0;
+function giveCard() {
+  lastCard.style.backgroundImage = `url(${AzathothAllCards[giveCardNumber].cardFace})`;
+  console.log(`Последняя карта:${AzathothAllCards[giveCardNumber].id} ${AzathothAllCards[giveCardNumber].difficulty}`);
+  giveCardNumber += 1;
+  if (giveCardNumber === AzathothAllCards.length) {
+    deck.classList.add('unvisible');
+  }
+}
 
 
 
@@ -130,108 +177,42 @@ function shaffleDeck(heroChecked, difficultChecked) {
 var greenEasy = allCardsData.filter(function (card) {
   return (card.difficulty === 'easy' && card.color === 'green');
 });
-shuffle(greenEasy);
+shuff(greenEasy);
 
 var brownEasy = allCardsData.filter(function (card) {
   return (card.difficulty === 'easy' && card.color === 'brown');
 });
-shuffle(brownEasy);
+shuff(brownEasy);
 var blueEasy = allCardsData.filter(function (card) {
   return (card.difficulty === 'easy' && card.color === 'blue');
 });
-shuffle(blueEasy);
+shuff(blueEasy);
 var greenNormal = allCardsData.filter(function (card) {
   return (card.difficulty === 'normal' && card.color === 'green');
 });
-shuffle(greenNormal);
+shuff(greenNormal);
 var brownNormal = allCardsData.filter(function (card) {
   return (card.difficulty === 'normal' && card.color === 'brown');
 });
-shuffle(brownNormal);
+shuff(brownNormal);
 var blueNormal = allCardsData.filter(function (card) {
   return (card.difficulty === 'normal' && card.color === 'blue');
 });
-shuffle(blueNormal);
+shuff(blueNormal);
 var greenHard = allCardsData.filter(function (card) {
   return (card.difficulty === 'hard' && card.color === 'green');
 });
-shuffle(greenHard);
+shuff(greenHard);
 var brownHard = allCardsData.filter(function (card) {
   return (card.difficulty === 'hard' && card.color === 'brown');
 });
-shuffle(brownHard);
+shuff(brownHard);
 var blueHard = allCardsData.filter(function (card) {
   return (card.difficulty === 'hard' && card.color === 'blue');
 });
-shuffle(blueHard);
-//make AzathothCardsData
+shuff(blueHard);
 
 
-
-
-// veryeasy for Azathoth
-/* while (AzathothGreen) {
-  for (let i = 0; i < greenEasy.length; i++) {
-    AzathothAllCards.push(greenEasy[i]);
-    AzathothGreen = AzathothGreen - 1;
-  }
-  if (AzathothGreen > 0) {
-    for (let j = 0; j < greenNormal.length; j++) {
-      SubDeck1.push(greenNormal[j]);
-      AzathothGreen = AzathothGreen - 1;
-    }
-  }
-} */
-
-
-/* 
-// veryeasy for AzathothBrown
-while (AzathothBrown) {
-  for (let i = 0; i < brownEasy.length; i++) {
-    AzathothAllCards.push(brownEasy[i]);
-    AzathothBrown = AzathothBrown - 1;
-  }
-  if (AzathothBrown > 0) {
-    for (let j = 0; j < brownNormal.length; j++) {
-      AzathothAllCards.push(brownNormal[j]);
-      AzathothBrown = AzathothBrown - 1;
-    }
-  }
-}
-
-// veryeasy for AzathothBlue
-while (AzathothBlue) {
-  for (let i = 0; i < blueEasy.length; i++) {
-    AzathothAllCards.push(blueEasy[i]);
-    AzathothBlue = AzathothBlue - 1;
-  }
-  if (AzathothBlue > 0) {
-    for (let j = 0; j < blueNormal.length; j++) {
-      AzathothAllCards.push(blueNormal[j]);
-      AzathothBlue = AzathothBlue - 1;
-    }
-  }
-} */
-
-/* 
-//very easy constructor
-function (name, ) {
-
-  while (HeroGreen) {
-    for (let i = 0; i < greenEasy.length; i++) {
-      AzathothAllCards.push(greenEasy[i]);
-      AzathothGreen = AzathothGreen - 1;
-    }
-    if (AzathothGreen > 0) {
-      for (let j = 0; j < greenNormal.length; j++) {
-        SubDeck1.push(greenNormal[j]);
-        AzathothGreen = AzathothGreen - 1;
-      }
-    }
-  }
-} */
-
-
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
+function shuff(deck) {
+  deck.sort(() => Math.random() - 0.5);
 }

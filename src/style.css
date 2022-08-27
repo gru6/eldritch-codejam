@@ -83,7 +83,7 @@ body {
   min-width: 30%;
 }
 
-.shaffle {
+.shuffle {
   background-color: red;
   border: 2px solid purple;
   color: purple;
@@ -114,6 +114,10 @@ body {
 
 .hidden {
   display: none;
+}
+
+.unvisible {
+  visibility: hidden;
 }
 
 .stage-container {
